@@ -204,11 +204,14 @@ window.adminLogin = async event => {
   event.preventDefault();
   const status = document.getElementById('admin-status');
   const input = document.getElementById('admin-pass');
-  const val = (input.value || '').trim();
+  const rawInput = (input.value || '').trim();
+  const cleanInput = rawInput.replace(/^\{|\}$/g, '').trim();
   const salt = 'void_production_salt_2026';
   const validHashes = [
-    '50da05ea0620b622423b0f5f8466d40934c30ea428617d68fe2ef1d915349c85',
-    'f03b73858ab75ce2608a091f0d9f71034e7ad65130a177e424ba1d279d8aa26b'
+    '18d7a43393f97e37c1defff1953dd71850d74fc89f3468fa275663103510e72b',
+    'af1f58029265db4f46e0fed67cadca47d82133102941470d92ff5522858db26c',
+    '63323f5b55637ad0bb9c57bb65d7ea261d9d605a4604c37661152cd15c25e851',
+    'a1500d38d3abca2154db3a2905f703413436d2108c10f660ca9fabe4c7ce2b1a'
   ];
   const AUTH_TOKEN = 'beb84b7918327a3af993a26c46f03a4574a9cc77e9615509c6b6c3a8afa1b4a4';
 
@@ -216,11 +219,19 @@ window.adminLogin = async event => {
 
   try {
     const encoder = new TextEncoder();
-    const data = encoder.encode(salt + ':' + val);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    const toHex = buffer => Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
 
-    if (validHashes.includes(hashHex)) {
+    const [d1, d2, d3] = await Promise.all([
+      crypto.subtle.digest('SHA-256', encoder.encode(salt + ':' + rawInput)),
+      crypto.subtle.digest('SHA-256', encoder.encode(salt + ':' + cleanInput)),
+      crypto.subtle.digest('SHA-256', encoder.encode(rawInput))
+    ]);
+
+    const h1 = toHex(d1);
+    const h2 = toHex(d2);
+    const h3 = toHex(d3);
+
+    if (validHashes.includes(h1) || validHashes.includes(h2) || validHashes.includes(h3)) {
       sessionStorage.setItem('voidAdminToken', AUTH_TOKEN);
       render();
     } else {
