@@ -79,33 +79,57 @@ function hero() {
 }
 
 function serviceRows() { return services.map(([num,name,desc]) => `<a class="service-row" href="#/services"><span class="service-index">${num}</span><span class="service-name">${name}</span><p>${desc}</p><span class="plus">+</span></a>`).join(''); }
-function projectCard(project) { return `<article class="project-card" onclick="go('project/${project.id}')" tabindex="0" role="link" onkeydown="if(event.key==='Enter')go('project/${project.id}')"><div class="project-img"><img src="${project.image}" alt="Sample project visual for ${project.title}" loading="lazy" /><span class="project-tag">${project.category}</span></div><div class="project-info"><h3>${project.title}</h3><p>${project.year}</p><p class="desc">${project.desc}</p></div></article>`; }
+function projectCard(project) { return `<article class="project-card" data-category="${project.category}" onclick="go('project/${project.id}')" tabindex="0" role="link" onkeydown="if(event.key==='Enter')go('project/${project.id}')"><div class="project-img"><img src="${project.image}" alt="Sample project visual for ${project.title}" loading="lazy" /><span class="project-tag">${project.category}</span></div><div class="project-info"><h3>${project.title}</h3><p>${project.year}</p><p class="desc">${project.desc}</p></div></article>`; }
 function personCard(person) { return `<article class="person"><div class="person-img"><img src="${person.image}" alt="Team member ${person.name}" loading="lazy" /></div><h3>${person.name}</h3><p>${person.role}</p>${person.bio ? `<p class="team-bio">${person.bio}</p>` : ''}</article>`; }
 function storyRow(article) { return `<article class="story-row" onclick="go('journal/${article.id}')" tabindex="0" role="link"><div><span class="story-type">${article.category}</span><h4>${article.title}</h4></div><time>${article.date}</time></article>`; }
 
-function home() {
-  return `${hero()}<main id="main"><section class="section intro"><div><span class="section-num">(01) / WHO WE ARE</span></div><div class="intro-side"><p class="statement">We make <em>thoughtful things</em> for ambitious people.</p><p>We connect strategy, identity and digital expression to create work with a clear place in the world. No noise. No borrowed formulas.</p><a class="text-link" href="#/about">More about VOID ↗</a></div></section><section class="section"><div class="section-header"><div><span class="section-num">(02) / CAPABILITIES</span><h2 class="section-title">Built around the work that moves people.</h2></div><a class="text-link" href="#/services">All capabilities ↗</a></div><div class="services-list">${serviceRows()}</div></section><section class="section projects"><div class="section-header"><div><span class="section-num">(03) / SELECTED WORK</span><h2 class="section-title">Things we are building in public.</h2></div><a class="text-link" href="#/work">See all work ↗</a></div><div class="project-grid">${projects.slice(0,3).map(projectCard).join('')}</div></section><section class="section"><div class="section-header"><div><span class="section-num">(04) / FIELD NOTES</span><h2 class="section-title">From the studio and beyond.</h2></div><a class="text-link" href="#/journal">Read the journal ↗</a></div><div class="journal-layout"><article class="featured-story" onclick="go('journal/${articles[0].id}')" role="link" tabindex="0"><div class="featured-img"><img src="${articles[0].image}" alt="${articles[0].title}" loading="lazy" /></div><span class="story-type">${articles[0].category} / ${articles[0].date}</span><h3>${articles[0].title}</h3><p class="story-copy">${articles[0].deck}</p></article><div class="story-list">${articles.slice(1,5).map(storyRow).join('')}</div></div></section><section class="section team-strip"><div class="section-header"><div><span class="section-num">(05) / THE PEOPLE</span><h2 class="section-title">Many disciplines. One shared appetite.</h2></div><a class="text-link" href="#/team">Meet the team ↗</a></div><div class="team-rail">${team.slice(0,4).map(personCard).join('')}</div></section><section class="cta"><span class="eyebrow">(06) / START A CONVERSATION</span><h2>Have something <span>in mind?</span></h2><a href="#/contact" class="outline-btn">Tell us about it <span aria-hidden="true">↗</span></a></section></main>`;
+function home(liveProjects, liveArticles, liveTeam) {
+  const p = liveProjects || projects;
+  const a = liveArticles || articles;
+  const t = liveTeam || team;
+  return `${hero()}<main id="main"><section class="section intro"><div><span class="section-num">(01) / WHO WE ARE</span></div><div class="intro-side"><p class="statement">We make <em>thoughtful things</em> for ambitious people.</p><p>We connect strategy, identity and digital expression to create work with a clear place in the world. No noise. No borrowed formulas.</p><a class="text-link" href="#/about">More about VOID ↗</a></div></section><section class="section"><div class="section-header"><div><span class="section-num">(02) / CAPABILITIES</span><h2 class="section-title">Built around the work that moves people.</h2></div><a class="text-link" href="#/services">All capabilities ↗</a></div><div class="services-list">${serviceRows()}</div></section><section class="section projects"><div class="section-header"><div><span class="section-num">(03) / SELECTED WORK</span><h2 class="section-title">Things we are building in public.</h2></div><a class="text-link" href="#/work">See all work ↗</a></div><div class="project-grid">${p.slice(0,3).map(projectCard).join('')}</div></section><section class="section"><div class="section-header"><div><span class="section-num">(04) / FIELD NOTES</span><h2 class="section-title">From the studio and beyond.</h2></div><a class="text-link" href="#/journal">Read the journal ↗</a></div><div class="journal-layout"><article class="featured-story" onclick="go('journal/${a[0].id}')" role="link" tabindex="0"><div class="featured-img"><img src="${a[0].image}" alt="${a[0].title}" loading="lazy" /></div><span class="story-type">${a[0].category} / ${a[0].date}</span><h3>${a[0].title}</h3><p class="story-copy">${a[0].deck}</p></article><div class="story-list">${a.slice(1,5).map(storyRow).join('')}</div></div></section><section class="section team-strip"><div class="section-header"><div><span class="section-num">(05) / THE PEOPLE</span><h2 class="section-title">Many disciplines. One shared appetite.</h2></div><a class="text-link" href="#/team">Meet the team ↗</a></div><div class="team-rail">${t.slice(0,4).map(personCard).join('')}</div></section><section class="cta"><span class="eyebrow">(06) / START A CONVERSATION</span><h2>Have something <span>in mind?</span></h2><a href="#/contact" class="outline-btn">Tell us about it <span aria-hidden="true">↗</span></a></section></main>`;
 }
 
 function about() { return `<main id="main"><section class="page-hero"><span class="eyebrow">(01) / About VOID</span><h1>MADE FOR<br>THE <em>UNFOLDING.</em></h1><p>We are an independent studio built for the interesting, difficult and worthwhile work of making a difference.</p></section><section class="page-body"><div class="split-statement"><span class="eyebrow">Our point of view</span><div><h2>We believe a useful idea should feel impossible to ignore.</h2><p class="large-copy">VOID is a creative partner for teams building culture, products and momentum. We bring a considered point of view to each conversation, then make it tangible.</p><p>Our name is about potential: the space before an idea becomes a thing. We protect that space long enough to find a stronger answer, then bring the focus to make it real.</p></div></div><div class="full-image"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1800&q=85" alt="A creative team meeting in a sunlit studio" /></div><div class="values">${[['Curiosity', 'The question is often more valuable than the first answer.'], ['Clarity', 'We remove what does not earn its place.'], ['Generosity', 'Good work makes more room for other people.']].map(([h,p],i)=>`<article class="value"><span class="eyebrow">0${i+1}</span><h3>${h}</h3><p>${p}</p></article>`).join('')}</div></section><section class="page-body process"><div class="section-header"><div><span class="section-num">Our approach</span><h2 class="section-title">A process with room to think.</h2></div></div>${[['01', 'Listen closely', 'We uncover the tensions, patterns and possibilities that matter.'], ['02', 'Find the signal', 'We shape a clear, ownable idea your team can stand behind.'], ['03', 'Make it resonate', 'We build the identity, experience and tools to carry it forward.'], ['04', 'Keep it moving', 'We stay close as work meets the world, learning as it goes.']].map(([n,h,p])=>`<div class="process-row"><span class="section-num">${n}</span><h3>${h}</h3><p>${p}</p></div>`).join('')}</section><section class="cta"><span class="eyebrow">Your next move</span><h2>Let’s make it <span>matter.</span></h2><a class="outline-btn" href="#/contact">Work with us ↗</a></section></main>`; }
 
 function servicesPage() { return `<main id="main"><section class="page-hero light"><span class="eyebrow">(02) / Services</span><h1>WHAT WE<br>MAKE <em>MATTER.</em></h1><p>Our offer is deliberately flexible. Every engagement starts with the work in front of us, not a pre-written menu.</p></section><section class="page-body"><div class="section-header"><div><span class="section-num">How we help</span><h2 class="section-title">Useful range, focused thinking.</h2></div></div>${services.map(([num,name,desc])=>`<article class="service-detail"><span class="section-num">${num}</span><div><h2>${name}</h2><div class="chips"><span class="chip">Placeholder offer</span><span class="chip">Adaptable scope</span></div></div><p>${desc}<br><br>Use this area to add your real service description, approach and relevant project examples. We have kept the content intentionally general until VOID’s confirmed offering is available.</p></article>`).join('')}</section><section class="cta"><span class="eyebrow">Need a different shape?</span><h2>Let’s find the right <span>way in.</span></h2><a class="outline-btn" href="#/contact">Start a conversation ↗</a></section></main>`; }
 
-function work() {
+function work(liveProjects) {
+  const p = liveProjects || projects;
   const filters = ['All', 'Web platform', 'AI tool', 'Mobile app', 'Automation'];
-  return `<main id="main"><section class="page-hero"><span class="eyebrow">(03) / Selected builds</span><h1>BUILT TO<br><em>WORK.</em></h1><p>A selection of product builds across web, apps, automation and AI.</p></section><section class="page-body"><div class="filter-bar">${filters.map((f,i)=>`<button class="filter ${i===0?'active':''}" onclick="filterProjects('${f}',this)">${f}</button>`).join('')}</div><div class="all-projects" id="all-projects">${projects.map(projectCard).join('')}</div></section></main>`;
+  return `<main id="main"><section class="page-hero"><span class="eyebrow">(03) / Selected builds</span><h1>BUILT TO<br><em>WORK.</em></h1><p>A selection of product builds across web, apps, automation and AI.</p></section><section class="page-body"><div class="filter-bar">${filters.map((f,i)=>`<button class="filter ${i===0?'active':''}" onclick="filterProjects('${f}',this)">${f}</button>`).join('')}</div><div class="all-projects" id="all-projects">${p.map(projectCard).join('')}</div></section></main>`;
 }
 
-function projectPage(id) { const p = projects.find(project => project.id === id) || projects[0]; const related = projects.filter(project => project.id !== p.id).slice(0,2); const gallery = projectGalleries[p.id] || []; const caseContent = { 'lumen': { challenge: 'Operations teams were drowning in dashboards that displayed everything but clarified nothing. Key decisions were delayed because the right data was buried under noise. The business needed a platform that helped people act, not just observe.', approach: 'We designed Lumen OS around progressive disclosure — surfacing only the next meaningful action based on the user\'s role and current context. The interface uses a calm, dark palette with generous spacing to reduce cognitive load. Data streams are prioritised by urgency, and contextual prompts adapt in real time. The modular component architecture allows each team to configure their own view without engineering support.', execution: 'Delivered a full web platform with role-based dashboards, real-time data integration, configurable alert thresholds, and a lightweight state layer optimised for speed under load. Launched with three internal teams, expanded to twelve within six months.' }, 'material': { challenge: 'AI tools promised productivity but delivered confusion — too many options, unclear outputs, and no connection to the actual decisions users needed to make. Teams needed an AI workspace that supported practical work, not experimentation for its own sake.', approach: 'Flow AI was built around decision-first design. Instead of presenting raw model outputs, we structured the interface around specific tasks: draft, compare, summarise, decide. Every AI interaction maps to a clear user intent. We used a conversational UI layered over structured data views, so outputs always have context.', execution: 'Shipped a web-based AI workspace with task-specific modules, team sharing, version history and an API layer for integration with existing tools. Pilot launched with two product teams, achieving measurable reduction in research-to-decision time.' }, 'tangent': { challenge: 'Early-stage ideas die in group chats and scattered notes. Founders and product leads needed a tool to move from a rough concept to a structured plan without the overhead of project management software.', approach: 'Tangent uses a guided flow that breaks idea development into three phases: capture, structure, and validate. Each phase has lightweight prompts that help users think through their concept without imposing a rigid framework. The mobile-first design means ideas can be captured anywhere and refined later.', execution: 'Launched on iOS and Android with offline support, collaborative workspaces, and export to common formats. Used by early-stage teams and independent builders to validate over 200 product concepts in the first quarter.' }, 'openfield': { challenge: 'Teams were using five or six disconnected tools for tasks that should flow together — handoffs were manual, context was lost, and nobody had a clear view of where work actually stood.', approach: 'Open Field connects existing tools through a unified workflow layer rather than replacing them. We built lightweight integrations that sync status, handoffs and blockers into a single timeline. The interface shows each team member exactly what needs their attention, when, and why.', execution: 'Deployed as an internal automation platform connecting project management, communication and documentation tools. Reduced manual status updates by 70% and cut average handoff time from 4 hours to 20 minutes across pilot teams.' }, 'nara': { challenge: 'Data teams were building reports that leadership never read. The dashboards were technically accurate but visually overwhelming, and the insights were buried in charts that required expertise to interpret.', approach: 'Nara Cloud was designed for calm data consumption. We replaced dense chart grids with a narrative-driven layout — each view tells a story with a clear headline, supporting metric and trend indicator. Colour is used sparingly and only to signal change. The typography-first design makes the dashboard readable at a glance.', execution: 'Delivered a cloud-hosted analytics dashboard with automated narrative summaries, role-based views and scheduled email digests. Adopted by three departments, with leadership engagement on data reviews increasing from monthly to weekly.' }, 'signal': { challenge: 'Product managers were spending hours each week manually combing through analytics, support tickets and market data to find the signals that should inform their next decision. The volume of data was growing faster than the team.', approach: 'Signal uses a relevance engine that filters and ranks data points based on the user\'s current focus — what they are deciding, not just what is trending. We built a clean, minimal interface that presents three to five key signals per session, each with source attribution and confidence scoring. The AI layer handles prioritisation; the human handles interpretation.', execution: 'Launched as a web application with integrations for analytics platforms, support tools and market feeds. Reduced average research time per decision from 3 hours to 25 minutes for pilot users.' } }; const c = caseContent[p.id] || { challenge: 'Define the specific problem, audience need and business constraint this project addressed.', approach: 'Describe the product logic, interface choices and technical decisions behind the build.', execution: 'Detail the deliverables, launch strategy and measurable outcomes.' }; return `<main id="main"><section class="page-hero"><span class="eyebrow">Case study / ${p.category} / ${p.year}</span><h1>${p.title.toUpperCase()}<br><em>CASE STUDY.</em></h1><p>${p.desc}</p></section><section class="page-body"><div class="full-image" style="margin-top:0"><img src="${p.image}" alt="Visual for ${p.title}" /></div><div class="case-details" style="margin-top:70px"><div><span class="eyebrow">Project overview</span><h2>${p.desc}</h2></div><div><p><strong>Challenge</strong><br>${c.challenge}</p><p><strong>Product approach</strong><br>${c.approach}</p><p><strong>Execution</strong><br>${c.execution}</p></div></div><div class="gallery"><img src="${p.image}" alt="Project visual for ${p.title}" /><img src="${gallery[0]}" alt="Product system visual for ${p.title}" /><img src="${gallery[1]}" alt="Interface system visual for ${p.title}" /></div></section><section class="section projects"><div class="section-header"><div><span class="section-num">More to explore</span><h2 class="section-title">Related work.</h2></div><a class="text-link" href="#/work">All projects ↗</a></div><div class="project-grid">${related.map(projectCard).join('')}</div></section></main>`; }
+function projectPage(id, liveProjects) {
+  const pool = liveProjects || projects;
+  const p = pool.find(project => project.id === id) || pool[0];
+  const related = pool.filter(project => project.id !== p.id).slice(0,2);
+  const gallery = p.gallery || projectGalleries[p.id] || [];
+  const caseContent = { 'lumen': { challenge: 'Operations teams were drowning in dashboards that displayed everything but clarified nothing. Key decisions were delayed because the right data was buried under noise. The business needed a platform that helped people act, not just observe.', approach: 'We designed Lumen OS around progressive disclosure — surfacing only the next meaningful action based on the user\'s role and current context. The interface uses a calm, dark palette with generous spacing to reduce cognitive load. Data streams are prioritised by urgency, and contextual prompts adapt in real time. The modular component architecture allows each team to configure their own view without engineering support.', execution: 'Delivered a full web platform with role-based dashboards, real-time data integration, configurable alert thresholds, and a lightweight state layer optimised for speed under load. Launched with three internal teams, expanded to twelve within six months.' }, 'material': { challenge: 'AI tools promised productivity but delivered confusion — too many options, unclear outputs, and no connection to the actual decisions users needed to make. Teams needed an AI workspace that supported practical work, not experimentation for its own sake.', approach: 'Flow AI was built around decision-first design. Instead of presenting raw model outputs, we structured the interface around specific tasks: draft, compare, summarise, decide. Every AI interaction maps to a clear user intent. We used a conversational UI layered over structured data views, so outputs always have context.', execution: 'Shipped a web-based AI workspace with task-specific modules, team sharing, version history and an API layer for integration with existing tools. Pilot launched with two product teams, achieving measurable reduction in research-to-decision time.' }, 'tangent': { challenge: 'Early-stage ideas die in group chats and scattered notes. Founders and product leads needed a tool to move from a rough concept to a structured plan without the overhead of project management software.', approach: 'Tangent uses a guided flow that breaks idea development into three phases: capture, structure, and validate. Each phase has lightweight prompts that help users think through their concept without imposing a rigid framework. The mobile-first design means ideas can be captured anywhere and refined later.', execution: 'Launched on iOS and Android with offline support, collaborative workspaces, and export to common formats. Used by early-stage teams and independent builders to validate over 200 product concepts in the first quarter.' }, 'openfield': { challenge: 'Teams were using five or six disconnected tools for tasks that should flow together — handoffs were manual, context was lost, and nobody had a clear view of where work actually stood.', approach: 'Open Field connects existing tools through a unified workflow layer rather than replacing them. We built lightweight integrations that sync status, handoffs and blockers into a single timeline. The interface shows each team member exactly what needs their attention, when, and why.', execution: 'Deployed as an internal automation platform connecting project management, communication and documentation tools. Reduced manual status updates by 70% and cut average handoff time from 4 hours to 20 minutes across pilot teams.' }, 'nara': { challenge: 'Data teams were building reports that leadership never read. The dashboards were technically accurate but visually overwhelming, and the insights were buried in charts that required expertise to interpret.', approach: 'Nara Cloud was designed for calm data consumption. We replaced dense chart grids with a narrative-driven layout — each view tells a story with a clear headline, supporting metric and trend indicator. Colour is used sparingly and only to signal change. The typography-first design makes the dashboard readable at a glance.', execution: 'Delivered a cloud-hosted analytics dashboard with automated narrative summaries, role-based views and scheduled email digests. Adopted by three departments, with leadership engagement on data reviews increasing from monthly to weekly.' }, 'signal': { challenge: 'Product managers were spending hours each week manually combing through analytics, support tickets and market data to find the signals that should inform their next decision. The volume of data was growing faster than the team.', approach: 'Signal uses a relevance engine that filters and ranks data points based on the user\'s current focus — what they are deciding, not just what is trending. We built a clean, minimal interface that presents three to five key signals per session, each with source attribution and confidence scoring. The AI layer handles prioritisation; the human handles interpretation.', execution: 'Launched as a web application with integrations for analytics platforms, support tools and market feeds. Reduced average research time per decision from 3 hours to 25 minutes for pilot users.' } };
+  const fallback = caseContent[p.id] || { challenge: 'Define the specific problem, audience need and business constraint this project addressed.', approach: 'Describe the product logic, interface choices and technical decisions behind the build.', execution: 'Detail the deliverables, launch strategy and measurable outcomes.' };
+  const c = { challenge: p.challenge || fallback.challenge, approach: p.approach || fallback.approach, execution: p.execution || fallback.execution };
+  return `<main id="main"><section class="page-hero"><span class="eyebrow">Case study / ${p.category} / ${p.year}</span><h1>${p.title.toUpperCase()}<br><em>CASE STUDY.</em></h1><p>${p.desc}</p></section><section class="page-body"><div class="full-image" style="margin-top:0"><img src="${p.image}" alt="Visual for ${p.title}" /></div><div class="case-details" style="margin-top:70px"><div><span class="eyebrow">Project overview</span><h2>${p.desc}</h2></div><div><p><strong>Challenge</strong><br>${c.challenge}</p><p><strong>Product approach</strong><br>${c.approach}</p><p><strong>Execution</strong><br>${c.execution}</p></div></div><div class="gallery"><img src="${p.image}" alt="Project visual for ${p.title}" /><img src="${gallery[0]||p.image}" alt="Product system visual for ${p.title}" /><img src="${gallery[1]||p.image}" alt="Interface system visual for ${p.title}" /></div></section><section class="section projects"><div class="section-header"><div><span class="section-num">More to explore</span><h2 class="section-title">Related work.</h2></div><a class="text-link" href="#/work">All projects ↗</a></div><div class="project-grid">${related.map(projectCard).join('')}</div></section></main>`;
+}
 
-function teamPage() { return `<main id="main"><section class="page-hero light"><span class="eyebrow">(04) / The people</span><h1>THE GOOD<br>KIND OF <em>COLLECTIVE.</em></h1><p>A structure can be a group of individuals. A studio should be more than that.</p></section><section class="page-body"><div class="split-statement"><span class="eyebrow">A note on this page</span><div><h2>Good work is never a solitary act.</h2><p class="large-copy">The team cards below are purposefully marked placeholders. Swap in real team details, approved portraits and social links from the admin area before public launch.</p></div></div></section><section class="page-body" style="padding-top:0"><div class="team-grid">${team.map(personCard).join('')}</div></section><section class="cta"><span class="eyebrow">Interested in joining?</span><h2>Bring your point of <span>view.</span></h2><a href="#/careers" class="outline-btn">See careers ↗</a></section></main>`; }
+function teamPage(liveTeam) {
+  const t = liveTeam || team;
+  return `<main id="main"><section class="page-hero light"><span class="eyebrow">(04) / The people</span><h1>THE GOOD<br>KIND OF <em>COLLECTIVE.</em></h1><p>A structure can be a group of individuals. A studio should be more than that.</p></section><section class="page-body"><div class="split-statement"><span class="eyebrow">A note on this page</span><div><h2>Good work is never a solitary act.</h2><p class="large-copy">The team cards below are purposefully marked placeholders. Swap in real team details, approved portraits and social links from the admin area before public launch.</p></div></div></section><section class="page-body" style="padding-top:0"><div class="team-grid">${t.map(personCard).join('')}</div></section><section class="cta"><span class="eyebrow">Interested in joining?</span><h2>Bring your point of <span>view.</span></h2><a href="#/careers" class="outline-btn">See careers ↗</a></section></main>`;
+}
 
-function journal() {
+function journal(liveArticles) {
+  const a = liveArticles || articles;
   const cats = ['All', 'Team note', 'Build log', 'Perspective', 'AI & systems', 'Culture'];
-  return `<main id="main"><section class="page-hero"><span class="eyebrow">(05) / Journal</span><h1>THINGS<br>WORTH <em>BUILDING.</em></h1><p>Notes, process and questions from a team that likes making useful things.</p></section><section class="page-body"><div class="filter-bar">${cats.map((f,i)=>`<button class="filter ${i===0?'active':''}" onclick="filterArticles('${f}',this)">${f}</button>`).join('')}</div><div class="journal-grid" id="article-grid">${articles.map(articleCard).join('')}</div></section></main>`;
+  return `<main id="main"><section class="page-hero"><span class="eyebrow">(05) / Journal</span><h1>THINGS<br>WORTH <em>BUILDING.</em></h1><p>Notes, process and questions from a team that likes making useful things.</p></section><section class="page-body"><div class="filter-bar">${cats.map((f,i)=>`<button class="filter ${i===0?'active':''}" onclick="filterArticles('${f}',this)">${f}</button>`).join('')}</div><div class="journal-grid" id="article-grid">${a.map(articleCard).join('')}</div></section></main>`;
 }
 function articleCard(article) { return `<article class="article-card" data-category="${article.category}" onclick="go('journal/${article.id}')" tabindex="0" role="link"><div><span class="story-type">${article.category}</span><h2>${article.title}</h2><p class="story-copy">${article.deck}</p></div><span class="article-meta">${article.date} / ${article.time} →</span></article>`; }
-function articlePage(id) { const a = articles.find(article=>article.id===id) || articles[0]; const bodyContent = { 'new-chapter': ['We started VOID because we saw too many teams struggling with fragmented tools, unclear workflows and products that never quite matched the problem they set out to solve. This is the beginning of something more focused.', 'Our approach is simple: understand the real constraint, design around it, and build something people use without a tutorial. Every project we take on starts with listening — to the team, to the users, to the system that already exists. We are not here to add complexity. We are here to reduce it.', 'This journal will track how we think, what we ship and what we learn along the way. Not polished case studies — honest notes from the build.'], 'inside-lumen': ['Lumen OS began as a question: what if an operations dashboard actually helped people decide, instead of just displaying data? Most dashboards show everything and clarify nothing. We wanted to fix that.', 'The core product decision was to surface only the next meaningful action. We stripped out vanity metrics, reorganised data by urgency, and built contextual prompts that adapt to the user\'s role. The interface is deliberately calm — dark backgrounds, generous spacing, progressive disclosure.', 'On the technical side, we chose a modular component architecture so each team could configure their own view. Real-time data streams feed a lightweight state layer that avoids unnecessary re-renders. The result is a platform that feels fast and stays useful under load.'], 'rituals': ['The best product work we have done has never come from a single breakthrough. It comes from a handful of habits that keep the team honest, curious and moving.', 'We run weekly product reviews where every decision gets questioned — not to slow things down, but to make sure we are solving the right problem. We prototype in the browser, not in slide decks. We write short design rationales before writing code, because the thinking matters more than the typing.', 'These rituals are not rules. They are agreements the team made with itself: stay close to the user, ship something real every week, and never confuse motion with progress.'], 'open-door': ['The best products we have built started with someone else\'s problem. Not a brief — a real frustration, a workflow that wasn\'t working, or a question nobody had answered clearly yet.', 'We are opening our door wider. If you have a system that needs rethinking, an internal tool that outgrew its spreadsheet, or an idea that needs structure — we want to hear about it. We are especially interested in problems that sit between teams, where no single department owns the solution.', 'This is an invitation. Bring us the messy ones.'], 'image-language': ['There is a version of AI that tries to replace human judgement. We are not interested in that version. We are interested in the version that makes judgement easier — by organising information, surfacing patterns and reducing the noise around a decision.', 'When we built Signal, the goal was not to automate analysis. It was to show a product manager exactly which data points mattered for the decision in front of them, and hide the rest. AI handled the sorting; humans handled the meaning.', 'The principle scales beyond a single tool. Every AI feature we build asks the same question: does this make the next step clearer? If the answer is no, we cut it.'], 'studio-summer': ['Summer has been a season of small experiments. We have been testing a new component library for faster prototyping, running internal design sprints on side projects, and exploring how voice interfaces could simplify complex admin workflows.', 'A few things that are on our bench right now: a lightweight CMS built for teams who outgrew Notion, a notification engine that learns which alerts actually matter, and an accessibility audit tool that integrates into the build pipeline.', 'Not all of these will ship. That is the point. The experiments we run during quieter months feed the product thinking we bring to client work year-round.'] }; const paras = bodyContent[a.id] || [a.deck, 'We are documenting our process, decisions and learnings as we go. Each entry captures the thinking behind the product, not just the output.', 'Follow the journal for regular updates on what we are building and why.']; return `<main id="main"><section class="page-hero light"><span class="eyebrow">${a.category} / ${a.date} / ${a.time}</span><h1>${a.title.toUpperCase()}</h1></section><article class="page-body article-view"><p class="story-type">Journal / ${a.category}</p><p>${a.deck}</p><img src="${a.image}" alt="Editorial image for ${a.title}" />${paras.map(p=>'<p>'+p+'</p>').join('')}<a class="outline-btn" href="#/journal">Back to journal <span>↗</span></a></article></main>`; }
+function articlePage(id, liveArticles) {
+  const pool = liveArticles || articles;
+  const a = pool.find(article=>article.id===id) || pool[0];
+  // Use custom body paragraphs saved via admin, or fall back to hardcoded bodyContent
+  const bodyContent = { 'new-chapter': ['We started VOID because we saw too many teams struggling with fragmented tools, unclear workflows and products that never quite matched the problem they set out to solve. This is the beginning of something more focused.', 'Our approach is simple: understand the real constraint, design around it, and build something people use without a tutorial. Every project we take on starts with listening — to the team, to the users, to the system that already exists. We are not here to add complexity. We are here to reduce it.', 'This journal will track how we think, what we ship and what we learn along the way. Not polished case studies — honest notes from the build.'], 'inside-lumen': ['Lumen OS began as a question: what if an operations dashboard actually helped people decide, instead of just displaying data? Most dashboards show everything and clarify nothing. We wanted to fix that.', 'The core product decision was to surface only the next meaningful action. We stripped out vanity metrics, reorganised data by urgency, and built contextual prompts that adapt to the user\'s role. The interface is deliberately calm — dark backgrounds, generous spacing, progressive disclosure.', 'On the technical side, we chose a modular component architecture so each team could configure their own view. Real-time data streams feed a lightweight state layer that avoids unnecessary re-renders. The result is a platform that feels fast and stays useful under load.'], 'rituals': ['The best product work we have done has never come from a single breakthrough. It comes from a handful of habits that keep the team honest, curious and moving.', 'We run weekly product reviews where every decision gets questioned — not to slow things down, but to make sure we are solving the right problem. We prototype in the browser, not in slide decks. We write short design rationales before writing code, because the thinking matters more than the typing.', 'These rituals are not rules. They are agreements the team made with itself: stay close to the user, ship something real every week, and never confuse motion with progress.'], 'open-door': ['The best products we have built started with someone else\'s problem. Not a brief — a real frustration, a workflow that wasn\'t working, or a question nobody had answered clearly yet.', 'We are opening our door wider. If you have a system that needs rethinking, an internal tool that outgrew its spreadsheet, or an idea that needs structure — we want to hear about it. We are especially interested in problems that sit between teams, where no single department owns the solution.', 'This is an invitation. Bring us the messy ones.'], 'image-language': ['There is a version of AI that tries to replace human judgement. We are not interested in that version. We are interested in the version that makes judgement easier — by organising information, surfacing patterns and reducing the noise around a decision.', 'When we built Signal, the goal was not to automate analysis. It was to show a product manager exactly which data points mattered for the decision in front of them, and hide the rest. AI handled the sorting; humans handled the meaning.', 'The principle scales beyond a single tool. Every AI feature we build asks the same question: does this make the next step clearer? If the answer is no, we cut it.'], 'studio-summer': ['Summer has been a season of small experiments. We have been testing a new component library for faster prototyping, running internal design sprints on side projects, and exploring how voice interfaces could simplify complex admin workflows.', 'A few things that are on our bench right now: a lightweight CMS built for teams who outgrew Notion, a notification engine that learns which alerts actually matter, and an accessibility audit tool that integrates into the build pipeline.', 'Not all of these will ship. That is the point. The experiments we run during quieter months feed the product thinking we bring to client work year-round.'] };
+  const paras = (a.body && a.body.length) ? a.body : (bodyContent[a.id] || [a.deck, 'We are documenting our process, decisions and learnings as we go. Each entry captures the thinking behind the product, not just the output.', 'Follow the journal for regular updates on what we are building and why.']);
+  return `<main id="main"><section class="page-hero light"><span class="eyebrow">${a.category} / ${a.date} / ${a.time}</span><h1>${a.title.toUpperCase()}</h1></section><article class="page-body article-view"><p class="story-type">Journal / ${a.category}</p><p>${a.deck}</p><img src="${a.image}" alt="Editorial image for ${a.title}" />${paras.map(p=>'<p>'+p+'</p>').join('')}<a class="outline-btn" href="#/journal">Back to journal <span>↗</span></a></article></main>`;
+}
 
 function careers() { return `<main id="main"><section class="page-hero light"><span class="eyebrow">(06) / Careers</span><h1>COME<br>MAKE A <em>MARK.</em></h1><p>We are looking for people who care about the details and the people on the other side of them.</p></section><section class="page-body"><div class="split-statement"><span class="eyebrow">Working at VOID</span><div><h2>Ambition needs company.</h2><p class="large-copy">We make room for focused craft, constructive disagreement and the learning that happens when different practices share a table.</p></div></div><div class="career-list" style="margin-top:75px">${[['Senior designer — sample listing','Casablanca / Hybrid','Full time'],['Creative developer — sample listing','Remote / Casablanca','Full time']].map(([role,location,type])=>`<article class="career"><h2>${role}</h2><p>${location}<br>${type}</p><a class="text-link" href="#/contact">Apply ↗</a></article>`).join('')}</div><div class="notice"><h2>No role with your name on it?</h2><p>We are always glad to meet curious people. Send a considered open application to <a href="mailto:hello@void.example"><strong>hello@void.example</strong></a> (placeholder email).</p></div></section></main>`; }
 
@@ -116,7 +140,8 @@ function admin() {
   if (!logged) return `<main class="admin-wrap" id="main"><form class="admin-login" onsubmit="adminLogin(event)"><p class="eyebrow">VOID / Team console</p><h1>Team console</h1><p>Manage the journal, project updates and team information from one focused workspace.</p><div class="field"><label for="admin-pass">Access passcode</label><input id="admin-pass" required type="password" placeholder="Enter secure passcode" autocomplete="current-password" /></div><button class="solid-btn" type="submit">Enter console ↗</button><p class="form-status" id="admin-status"></p></form></main>`;
   const localArticles = JSON.parse(localStorage.getItem('voidArticles') || 'null') || articles;
   const localProjects = JSON.parse(localStorage.getItem('voidProjects') || 'null') || projects;
-  return `<main class="admin-wrap" id="main"><div class="admin-grid"><aside class="admin-sidebar"><p>VOID / team console</p><button onclick="adminTab('overview')">Overview</button><button onclick="adminTab('articles')">Journal</button><button onclick="adminTab('projects')">Projects</button><button onclick="adminTab('team')">Team</button><button onclick="adminTab('settings')">Settings</button><button onclick="adminLogout()">Sign out</button></aside><section class="admin-main" id="admin-main"><p class="eyebrow">Overview</p><h1 class="admin-title">Content overview</h1><p class="story-copy">Review and organize the work, ideas and people that represent VOID.</p><div class="admin-kpis"><div class="kpi"><strong>${localArticles.length}</strong><span>Journal entries</span></div><div class="kpi"><strong>${localProjects.length}</strong><span>Projects</span></div><div class="kpi"><strong>${team.length}</strong><span>Team members</span></div></div></section></div></main>`;
+  const localTeam = JSON.parse(localStorage.getItem('voidTeam') || 'null') || team;
+  return `<main class="admin-wrap" id="main"><div class="admin-grid"><aside class="admin-sidebar"><p>VOID / team console</p><button class="sidebar-btn active-tab" onclick="adminTab('overview',this)">Overview</button><button class="sidebar-btn" onclick="adminTab('articles',this)">Journal</button><button class="sidebar-btn" onclick="adminTab('projects',this)">Projects</button><button class="sidebar-btn" onclick="adminTab('team',this)">Team</button><button class="sidebar-btn" onclick="adminTab('settings',this)">Settings</button><button class="sidebar-btn" onclick="adminLogout()">Sign out</button></aside><section class="admin-main" id="admin-main"><p class="eyebrow">Overview</p><h1 class="admin-title">Content overview</h1><p class="story-copy">Review and organize the work, ideas and people that represent VOID.</p><div class="admin-kpis"><div class="kpi"><strong>${localArticles.length}</strong><span>Journal entries</span></div><div class="kpi"><strong>${localProjects.length}</strong><span>Projects</span></div><div class="kpi"><strong>${localTeam.length}</strong><span>Team members</span></div></div></section></div></main>`;
 }
 
 function productCopy(markup) {
@@ -176,19 +201,23 @@ function productCopy(markup) {
 function render() {
   const route = pageRoute();
   const [base, id] = route.split('/');
+  // Always read live data from localStorage so admin changes are reflected immediately
+  const liveArticles = JSON.parse(localStorage.getItem('voidArticles') || 'null') || articles;
+  const liveProjects = JSON.parse(localStorage.getItem('voidProjects') || 'null') || projects;
+  const liveTeam = JSON.parse(localStorage.getItem('voidTeam') || 'null') || team;
   let content = '';
-  if (base === 'home') content = home();
+  if (base === 'home') content = home(liveProjects, liveArticles, liveTeam);
   else if (base === 'about') content = about();
   else if (base === 'services') content = servicesPage();
-  else if (base === 'work') content = work();
-  else if (base === 'project') content = projectPage(id);
-  else if (base === 'team') content = teamPage();
-  else if (base === 'journal' && id) content = articlePage(id);
-  else if (base === 'journal') content = journal();
+  else if (base === 'work') content = work(liveProjects);
+  else if (base === 'project') content = projectPage(id, liveProjects);
+  else if (base === 'team') content = teamPage(liveTeam);
+  else if (base === 'journal' && id) content = articlePage(id, liveArticles);
+  else if (base === 'journal') content = journal(liveArticles);
   else if (base === 'careers') content = careers();
   else if (base === 'contact') content = contact();
   else if (base === 'admin') content = admin();
-  else content = home();
+  else content = home(liveProjects, liveArticles, liveTeam);
   const sectionRoute = ['project', 'journal'].includes(base) ? (base === 'project' ? 'work' : 'journal') : base;
   const markup = `<div class="shell">${header(sectionRoute)}${content}${base === 'admin' ? '' : footer()}</div>`;
   document.getElementById('app').innerHTML = productCopy(markup);
@@ -197,7 +226,7 @@ function render() {
 }
 
 window.toggleMenu = () => document.getElementById('site-nav').classList.toggle('open');
-window.filterProjects = (category, button) => { document.querySelectorAll('.filter').forEach(node => node.classList.remove('active')); button.classList.add('active'); document.querySelectorAll('#all-projects .project-card').forEach((card,i) => { const show = category === 'All' || projects[i].category === category; card.classList.toggle('hidden', !show); }); };
+window.filterProjects = (category, button) => { document.querySelectorAll('.filter').forEach(node => node.classList.remove('active')); button.classList.add('active'); document.querySelectorAll('#all-projects .project-card').forEach(card => { const show = category === 'All' || card.dataset.category === category; card.classList.toggle('hidden', !show); }); };
 window.filterArticles = (category, button) => { document.querySelectorAll('.filter').forEach(node => node.classList.remove('active')); button.classList.add('active'); document.querySelectorAll('#article-grid .article-card').forEach(card => card.classList.toggle('hidden', category !== 'All' && card.dataset.category !== category)); };
 window.sendContact = event => { event.preventDefault(); const form = event.currentTarget; const status = document.getElementById('form-status'); const data = Object.fromEntries(new FormData(form)); const body = [`Name: ${data.name}`, `Email: ${data.email}`, `Company: ${data.company || '—'}`, '', data.message].join('\n'); const mailto = `mailto:voidd2027@gmail.com?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(body)}`; status.textContent = 'Opening your email app…'; window.location.href = mailto; };
 window.adminLogin = async event => {
@@ -243,21 +272,299 @@ window.adminLogin = async event => {
     status.textContent = 'Authentication service unavailable.';
   }
 };
-window.adminLogout = () => { sessionStorage.removeItem('voidAdminToken'); render(); };
-window.adminTab = tab => {
-  const main = document.getElementById('admin-main');
-  const key = tab === 'articles' ? 'voidArticles' : 'voidProjects';
-  const label = tab === 'articles' ? 'Journal entries' : 'Projects';
-  if (tab === 'overview') return render();
-  if (tab === 'team' || tab === 'settings') {
-    main.innerHTML = `<p class="eyebrow">${tab}</p><h1 class="admin-title">${tab === 'team' ? 'Team members' : 'Team settings'}</h1><div class="notice"><h2>${tab === 'team' ? 'The people behind the products.' : 'Keep the essentials current.'}</h2><p>${tab === 'team' ? 'Update team information and roles as VOID grows.' : 'Keep contact details, social links and featured work consistent across the site.'}</p></div>`;
-    return;
-  }
-  const items = JSON.parse(localStorage.getItem(key) || 'null') || (tab === 'articles' ? articles : projects);
-  main.innerHTML = `<p class="eyebrow">Manage ${label.toLowerCase()}</p><h1 class="admin-title">${label}</h1><div class="admin-add"><input id="content-title" placeholder="Title" /><input id="content-meta" placeholder="Category / status" /><button class="solid-btn" onclick="addContent('${tab}')">Add item</button></div><div id="content-list">${items.map((item,index)=>`<div class="content-row"><div><strong>${esc(item.title)}</strong><p>${esc(item.category || item.role || 'Draft')} · Team content</p></div><button class="small-btn danger" onclick="deleteContent('${tab}',${index})">Remove</button></div>`).join('')}</div>`;
+/* ── helpers ── */
+const adminSaveNotice = (msg = 'Saved.', color = 'var(--purple)') => {
+  let n = document.getElementById('admin-save-notice');
+  if (!n) { n = document.createElement('div'); n.id = 'admin-save-notice'; Object.assign(n.style, { position:'fixed', bottom:'28px', right:'28px', background:color, color:'#fff', padding:'12px 20px', fontFamily:'var(--mono)', fontSize:'12px', zIndex:9999, borderRadius:'2px', boxShadow:'0 4px 24px rgba(0,0,0,.18)', transition:'opacity .4s' }); document.body.appendChild(n); } n.style.opacity = '1'; n.textContent = msg; clearTimeout(n._t); n._t = setTimeout(() => { n.style.opacity = '0'; }, 2200);
 };
-window.addContent = tab => { const title = document.getElementById('content-title').value.trim(); const meta = document.getElementById('content-meta').value.trim(); if (!title) return; const key = tab === 'articles' ? 'voidArticles' : 'voidProjects'; const current = JSON.parse(localStorage.getItem(key) || 'null') || (tab === 'articles' ? articles : projects); current.push({ title, category: meta || 'Draft' }); localStorage.setItem(key, JSON.stringify(current)); adminTab(tab); };
-window.deleteContent = (tab,index) => { const key = tab === 'articles' ? 'voidArticles' : 'voidProjects'; const current = JSON.parse(localStorage.getItem(key) || 'null') || (tab === 'articles' ? articles : projects); current.splice(index,1); localStorage.setItem(key, JSON.stringify(current)); adminTab(tab); };
+const adminGetData = key => JSON.parse(localStorage.getItem(key) || 'null');
+const adminSetData = (key, val) => localStorage.setItem(key, JSON.stringify(val));
+const getSidebarBtn = tab => document.querySelector(`.sidebar-btn[onclick*="'${tab}'"]`);
+
+window.adminTab = (tab, clickedBtn) => {
+  document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active-tab'));
+  const btn = clickedBtn || getSidebarBtn(tab);
+  if (btn) btn.classList.add('active-tab');
+  const main = document.getElementById('admin-main');
+  if (tab === 'overview') { render(); return; }
+  if (tab === 'articles') { adminTabArticles(main); return; }
+  if (tab === 'projects') { adminTabProjects(main); return; }
+  if (tab === 'team') { adminTabTeam(main); return; }
+  if (tab === 'settings') { adminTabSettings(main); return; }
+};
+
+/* ══════════════════════════════════════════════════
+   JOURNAL TAB — full CRUD with all fields
+══════════════════════════════════════════════════ */
+function adminTabArticles(main) {
+  const items = adminGetData('voidArticles') || [...articles];
+  main.innerHTML = `
+    <p class="eyebrow">Manage journal</p>
+    <h1 class="admin-title">Journal entries</h1>
+    <button class="solid-btn" style="margin-bottom:24px" onclick="adminNewArticle()">+ Add entry</button>
+    <div id="content-list">
+      ${items.map((a, i) => `
+        <div class="content-row">
+          <div>
+            <strong>${esc(a.title)}</strong>
+            <p>${esc(a.category || 'Draft')} · ${esc(a.date || '')} · ${esc(a.time || '')}</p>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="small-btn" onclick="adminEditArticle(${i})">Edit</button>
+            <button class="small-btn danger" onclick="adminDeleteArticle(${i})">Delete</button>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+window.adminNewArticle = () => adminEditArticle(-1);
+window.adminEditArticle = idx => {
+  const items = adminGetData('voidArticles') || [...articles];
+  const a = idx >= 0 ? { ...items[idx] } : { id:'', title:'', category:'', date:'', time:'', deck:'', image:'' };
+  const main = document.getElementById('admin-main');
+  main.innerHTML = `
+    <p class="eyebrow">${idx >= 0 ? 'Edit' : 'New'} journal entry</p>
+    <h1 class="admin-title">${idx >= 0 ? esc(a.title) : 'New entry'}</h1>
+    <form class="admin-edit-form" onsubmit="adminSaveArticle(event,${idx})">
+      <div class="admin-form-grid">
+        <div class="field"><label>Title</label><input name="title" value="${esc(a.title)}" required /></div>
+        <div class="field"><label>ID / slug (URL key)</label><input name="id" value="${esc(a.id)}" placeholder="e.g. new-chapter" /></div>
+        <div class="field"><label>Category</label><input name="category" value="${esc(a.category)}" placeholder="e.g. Team note" /></div>
+        <div class="field"><label>Date</label><input name="date" value="${esc(a.date)}" placeholder="e.g. 14.10.26" /></div>
+        <div class="field"><label>Read time</label><input name="time" value="${esc(a.time)}" placeholder="e.g. 4 min read" /></div>
+        <div class="field"><label>Cover image URL</label><input name="image" value="${esc(a.image)}" placeholder="https://…" /></div>
+        <div class="field" style="grid-column:1/-1"><label>Deck / subtitle</label><textarea name="deck" rows="2">${esc(a.deck)}</textarea></div>
+        <div class="field" style="grid-column:1/-1"><label>Body — paragraph 1</label><textarea name="body0" rows="4">${esc((a.body||[])[0]||'')}</textarea></div>
+        <div class="field" style="grid-column:1/-1"><label>Body — paragraph 2</label><textarea name="body1" rows="4">${esc((a.body||[])[1]||'')}</textarea></div>
+        <div class="field" style="grid-column:1/-1"><label>Body — paragraph 3</label><textarea name="body2" rows="4">${esc((a.body||[])[2]||'')}</textarea></div>
+      </div>
+      ${a.image ? `<div style="margin:10px 0 18px"><img src="${esc(a.image)}" style="max-height:140px;object-fit:cover;width:100%;border-radius:2px" /></div>` : ''}
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button class="solid-btn" type="submit">Save entry</button>
+        <button class="small-btn" type="button" onclick="adminTabArticles(document.getElementById('admin-main'))">← Back</button>
+        ${idx >= 0 ? `<button class="small-btn danger" type="button" onclick="adminDeleteArticle(${idx})">Delete</button>` : ''}
+      </div>
+    </form>`;
+};
+
+window.adminSaveArticle = (e, idx) => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  const items = adminGetData('voidArticles') || [...articles];
+  const body = [f.get('body0'), f.get('body1'), f.get('body2')].filter(p => p && p.trim());
+  const entry = {
+    id: (f.get('id') || f.get('title')).trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+    title: f.get('title').trim(),
+    category: f.get('category').trim(),
+    date: f.get('date').trim(),
+    time: f.get('time').trim(),
+    deck: f.get('deck').trim(),
+    image: f.get('image').trim(),
+    body
+  };
+  if (idx >= 0) items[idx] = entry; else items.unshift(entry);
+  adminSetData('voidArticles', items);
+  adminSaveNotice('Entry saved ✓');
+  adminTabArticles(document.getElementById('admin-main'));
+};
+
+window.adminDeleteArticle = idx => {
+  if (!confirm('Delete this journal entry?')) return;
+  const items = adminGetData('voidArticles') || [...articles];
+  items.splice(idx, 1);
+  adminSetData('voidArticles', items);
+  adminTabArticles(document.getElementById('admin-main'));
+};
+
+/* ══════════════════════════════════════════════════
+   PROJECTS TAB — full CRUD with all fields
+══════════════════════════════════════════════════ */
+function adminTabProjects(main) {
+  const items = adminGetData('voidProjects') || [...projects];
+  main.innerHTML = `
+    <p class="eyebrow">Manage projects</p>
+    <h1 class="admin-title">Projects</h1>
+    <button class="solid-btn" style="margin-bottom:24px" onclick="adminNewProject()">+ Add project</button>
+    <div id="content-list">
+      ${items.map((p, i) => `
+        <div class="content-row">
+          <div style="display:flex;align-items:center;gap:14px">
+            ${p.image ? `<img src="${esc(p.image)}" style="width:54px;height:40px;object-fit:cover;border-radius:2px;flex-shrink:0" />` : ''}
+            <div><strong>${esc(p.title)}</strong><p>${esc(p.category)} · ${esc(p.year)}</p></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="small-btn" onclick="adminEditProject(${i})">Edit</button>
+            <button class="small-btn danger" onclick="adminDeleteProject(${i})">Delete</button>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+window.adminNewProject = () => adminEditProject(-1);
+window.adminEditProject = idx => {
+  const items = adminGetData('voidProjects') || [...projects];
+  const p = idx >= 0 ? { ...items[idx] } : { id:'', title:'', category:'', year:'', desc:'', image:'', challenge:'', approach:'', execution:'' };
+  const main = document.getElementById('admin-main');
+  main.innerHTML = `
+    <p class="eyebrow">${idx >= 0 ? 'Edit' : 'New'} project</p>
+    <h1 class="admin-title">${idx >= 0 ? esc(p.title) : 'New project'}</h1>
+    <form class="admin-edit-form" onsubmit="adminSaveProject(event,${idx})">
+      <div class="admin-form-grid">
+        <div class="field"><label>Title</label><input name="title" value="${esc(p.title)}" required /></div>
+        <div class="field"><label>ID / slug</label><input name="id" value="${esc(p.id)}" placeholder="e.g. lumen" /></div>
+        <div class="field"><label>Category</label><input name="category" value="${esc(p.category)}" placeholder="e.g. Web platform" /></div>
+        <div class="field"><label>Year</label><input name="year" value="${esc(p.year)}" placeholder="e.g. 2026" /></div>
+        <div class="field" style="grid-column:1/-1"><label>Short description</label><textarea name="desc" rows="2">${esc(p.desc)}</textarea></div>
+        <div class="field" style="grid-column:1/-1"><label>Cover image URL</label><input name="image" value="${esc(p.image)}" placeholder="https://…" /></div>
+        <div class="field" style="grid-column:1/-1"><label>Challenge</label><textarea name="challenge" rows="4">${esc(p.challenge||'')}</textarea></div>
+        <div class="field" style="grid-column:1/-1"><label>Product approach</label><textarea name="approach" rows="4">${esc(p.approach||'')}</textarea></div>
+        <div class="field" style="grid-column:1/-1"><label>Execution / results</label><textarea name="execution" rows="4">${esc(p.execution||'')}</textarea></div>
+        <div class="field"><label>Gallery image 1 URL</label><input name="gallery0" value="${esc((p.gallery||[])[0]||'')}" placeholder="https://…" /></div>
+        <div class="field"><label>Gallery image 2 URL</label><input name="gallery1" value="${esc((p.gallery||[])[1]||'')}" placeholder="https://…" /></div>
+      </div>
+      ${p.image ? `<div style="margin:10px 0 18px"><img src="${esc(p.image)}" style="max-height:140px;object-fit:cover;width:100%;border-radius:2px" /></div>` : ''}
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button class="solid-btn" type="submit">Save project</button>
+        <button class="small-btn" type="button" onclick="adminTabProjects(document.getElementById('admin-main'))">← Back</button>
+        ${idx >= 0 ? `<button class="small-btn danger" type="button" onclick="adminDeleteProject(${idx})">Delete</button>` : ''}
+      </div>
+    </form>`;
+};
+
+window.adminSaveProject = (e, idx) => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  const items = adminGetData('voidProjects') || [...projects];
+  const gallery = [f.get('gallery0'), f.get('gallery1')].filter(u => u && u.trim());
+  const entry = {
+    id: (f.get('id') || f.get('title')).trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+    title: f.get('title').trim(),
+    category: f.get('category').trim(),
+    year: f.get('year').trim(),
+    desc: f.get('desc').trim(),
+    image: f.get('image').trim(),
+    challenge: f.get('challenge').trim(),
+    approach: f.get('approach').trim(),
+    execution: f.get('execution').trim(),
+    gallery
+  };
+  if (idx >= 0) items[idx] = entry; else items.unshift(entry);
+  adminSetData('voidProjects', items);
+  adminSaveNotice('Project saved ✓');
+  adminTabProjects(document.getElementById('admin-main'));
+};
+
+window.adminDeleteProject = idx => {
+  if (!confirm('Delete this project?')) return;
+  const items = adminGetData('voidProjects') || [...projects];
+  items.splice(idx, 1);
+  adminSetData('voidProjects', items);
+  adminTabProjects(document.getElementById('admin-main'));
+};
+
+/* ══════════════════════════════════════════════════
+   TEAM TAB — full CRUD with all fields
+══════════════════════════════════════════════════ */
+function adminTabTeam(main) {
+  const items = adminGetData('voidTeam') || [...team];
+  main.innerHTML = `
+    <p class="eyebrow">Manage team</p>
+    <h1 class="admin-title">Team members</h1>
+    <button class="solid-btn" style="margin-bottom:24px" onclick="adminNewMember()">+ Add member</button>
+    <div id="content-list">
+      ${items.map((m, i) => `
+        <div class="content-row">
+          <div style="display:flex;align-items:center;gap:14px">
+            ${m.image ? `<img src="${esc(m.image)}" style="width:44px;height:44px;object-fit:cover;border-radius:50%;flex-shrink:0" />` : '<div style="width:44px;height:44px;background:var(--line);border-radius:50%;flex-shrink:0"></div>'}
+            <div><strong>${esc(m.name)}</strong><p>${esc(m.role)}</p></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="small-btn" onclick="adminEditMember(${i})">Edit</button>
+            <button class="small-btn danger" onclick="adminDeleteMember(${i})">Delete</button>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+window.adminNewMember = () => adminEditMember(-1);
+window.adminEditMember = idx => {
+  const items = adminGetData('voidTeam') || [...team];
+  const m = idx >= 0 ? { ...items[idx] } : { name:'', role:'', image:'', bio:'' };
+  const main = document.getElementById('admin-main');
+  main.innerHTML = `
+    <p class="eyebrow">${idx >= 0 ? 'Edit' : 'New'} team member</p>
+    <h1 class="admin-title">${idx >= 0 ? esc(m.name) : 'New member'}</h1>
+    <form class="admin-edit-form" onsubmit="adminSaveMember(event,${idx})">
+      <div class="admin-form-grid">
+        <div class="field"><label>Full name</label><input name="name" value="${esc(m.name)}" required /></div>
+        <div class="field"><label>Role / title</label><input name="role" value="${esc(m.role)}" /></div>
+        <div class="field" style="grid-column:1/-1"><label>Photo URL</label><input name="image" value="${esc(m.image)}" placeholder="https://…" /></div>
+        <div class="field" style="grid-column:1/-1"><label>Short bio (optional)</label><textarea name="bio" rows="3">${esc(m.bio||'')}</textarea></div>
+      </div>
+      ${m.image ? `<div style="margin:10px 0 18px;display:flex;gap:12px;align-items:center"><img src="${esc(m.image)}" style="width:72px;height:72px;object-fit:cover;border-radius:50%" /><span style="font:11px var(--mono);color:var(--muted)">Current photo</span></div>` : ''}
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button class="solid-btn" type="submit">Save member</button>
+        <button class="small-btn" type="button" onclick="adminTabTeam(document.getElementById('admin-main'))">← Back</button>
+        ${idx >= 0 ? `<button class="small-btn danger" type="button" onclick="adminDeleteMember(${idx})">Delete</button>` : ''}
+      </div>
+    </form>`;
+};
+
+window.adminSaveMember = (e, idx) => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  const items = adminGetData('voidTeam') || [...team];
+  const entry = { name: f.get('name').trim(), role: f.get('role').trim(), image: f.get('image').trim(), bio: f.get('bio').trim() };
+  if (idx >= 0) items[idx] = entry; else items.push(entry);
+  adminSetData('voidTeam', items);
+  adminSaveNotice('Team member saved ✓');
+  adminTabTeam(document.getElementById('admin-main'));
+};
+
+window.adminDeleteMember = idx => {
+  if (!confirm('Remove this team member?')) return;
+  const items = adminGetData('voidTeam') || [...team];
+  items.splice(idx, 1);
+  adminSetData('voidTeam', items);
+  adminTabTeam(document.getElementById('admin-main'));
+};
+
+/* ══════════════════════════════════════════════════
+   SETTINGS TAB
+══════════════════════════════════════════════════ */
+function adminTabSettings(main) {
+  const s = adminGetData('voidSettings') || {};
+  main.innerHTML = `
+    <p class="eyebrow">Settings</p>
+    <h1 class="admin-title">Site settings</h1>
+    <form class="admin-edit-form" onsubmit="adminSaveSettings(event)">
+      <div class="admin-form-grid">
+        <div class="field" style="grid-column:1/-1"><label>Studio email</label><input name="email" value="${esc(s.email||'voidd2027@gmail.com')}" type="email" /></div>
+        <div class="field"><label>Instagram URL</label><input name="instagram" value="${esc(s.instagram||'https://www.instagram.com/iyyykiiiiiiiim/')}" /></div>
+        <div class="field"><label>LinkedIn URL</label><input name="linkedin" value="${esc(s.linkedin||'https://www.linkedin.com/in/the-voidd-7442b3448')}" /></div>
+        <div class="field" style="grid-column:1/-1"><label>Footer tagline</label><input name="footerTagline" value="${esc(s.footerTagline||'An independent digital product team building websites, apps and intelligent tools that make work clearer.')}" /></div>
+        <div class="field" style="grid-column:1/-1"><label>Studio location</label><input name="location" value="${esc(s.location||'Taroudant / Anywhere')}" /></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:12px">
+        <button class="solid-btn" type="submit">Save settings</button>
+        <button class="small-btn danger" type="button" onclick="adminResetAll()">Reset all content to defaults</button>
+      </div>
+    </form>`;
+}
+
+window.adminSaveSettings = e => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  adminSetData('voidSettings', { email: f.get('email').trim(), instagram: f.get('instagram').trim(), linkedin: f.get('linkedin').trim(), footerTagline: f.get('footerTagline').trim(), location: f.get('location').trim() });
+  adminSaveNotice('Settings saved ✓');
+};
+
+window.adminResetAll = () => {
+  if (!confirm('Reset ALL content to defaults? This cannot be undone.')) return;
+  ['voidArticles','voidProjects','voidTeam','voidSettings'].forEach(k => localStorage.removeItem(k));
+  adminSaveNotice('Reset to defaults ✓', '#9b1e1e');
+  render();
+};
 
 window.addEventListener('hashchange', render);
 render();
