@@ -216,7 +216,7 @@ const defaultSettings = {
   heroEyebrowRight: 'Taroudant ↔ Everywhere',
   heroHeadline: 'WEB. APPS.<br><span class="outline">INTELLIGENCE.</span>',
   heroCopy: 'VOID turns hard problems into high-performing websites, apps and AI tools that people can actually use.',
-  instagram: 'https://www.instagram.com/iyyykiiiiiiiim/',
+  instagram: 'https://www.instagram.com/voiddd.team/',
   linkedin: 'https://www.linkedin.com/in/the-voidd-7442b3448',
   footerTagline: 'An independent digital product team building websites, apps and intelligent tools that make work clearer.',
   aboutTitle: 'We believe a useful tool should make the next step obvious.',
@@ -294,7 +294,7 @@ function header(currentBase) {
 function footer() {
   const s = getSettings();
   const email = esc(s.email || 'voidd2027@gmail.com');
-  const instagram = esc(s.instagram || 'https://www.instagram.com/iyyykiiiiiiiim/');
+  const instagram = esc(s.instagram || 'https://www.instagram.com/voiddd.team/');
   const linkedin = esc(s.linkedin || 'https://www.linkedin.com/in/the-voidd-7442b3448');
   const tagline = esc(s.footerTagline || 'An independent digital product team building websites, apps and intelligent tools that make work clearer.');
   const location = esc(s.location || 'Taroudant / Anywhere');
@@ -833,7 +833,7 @@ function contact() {
   const s = getSettings();
   const email = esc(s.email || 'voidd2027@gmail.com');
   const location = esc(s.location || 'Taroudant / Anywhere');
-  const instagram = esc(s.instagram || 'https://www.instagram.com/iyyykiiiiiiiim/');
+  const instagram = esc(s.instagram || 'https://www.instagram.com/voiddd.team/');
   const linkedin = esc(s.linkedin || 'https://www.linkedin.com/in/the-voidd-7442b3448');
 
   return `<main id="main">
@@ -1783,7 +1783,7 @@ function adminTabSettings(main) {
         </div>
         <div class="field">
           <label>Instagram URL</label>
-          <input name="instagram" value="${esc(s.instagram || 'https://www.instagram.com/iyyykiiiiiiiim/')}" />
+          <input name="instagram" value="${esc(s.instagram || 'https://www.instagram.com/voiddd.team/')}" />
         </div>
         <div class="field">
           <label>LinkedIn URL</label>
